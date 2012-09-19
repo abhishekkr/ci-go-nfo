@@ -1,19 +1,21 @@
 # -*- encoding: utf-8 -*-
-require File.expand_path('../lib/ci-go-nfo/version', __FILE__)
+$:.push File.expand_path('../lib', __FILE__)
+require 'ci-go-nfo/version'
 
 Gem::Specification.new do |gem|
+  gem.name          = "ci-go-nfo"
   gem.authors       = ["AbhishekKr"]
   gem.email         = ["abhikumar163@gmail.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
-  gem.homepage      = ""
+  gem.description   = %q{A console utility to get information from your ThoughtWorks' Go Continuous Integration Server. Run '$ ci-go-nfo setup' to configure your access from console utility.}
+  gem.summary       = %q{a console utility to get information from your ThoughtWorks' Go Continuous Integration Server}
+  gem.homepage      = "https://github.com/abhishekkr/ci-go-nfo"
 
   gem.files         = `git ls-files`.split($\)
-  gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
-  gem.name          = "ci-go-nfo"
   gem.require_paths = ["lib"]
   gem.version       = Ci::Go::Nfo::VERSION
+
+  gem.executables   = %w( ci-go-nfo )
 
   gem.add_runtime_dependency 'xml-motor', '>= 0.1.6'
   gem.add_development_dependency 'xml-motor', '>= 0.1.6'
