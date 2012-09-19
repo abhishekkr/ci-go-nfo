@@ -14,7 +14,25 @@ easily from console itself, no more browse
 
 ## Usage
 
-TODO: Write usage instructions here
+  Ci-Go-Nfo ver.0.0.1
+
+  to set-up credential config for your go-ci
+  $ ci-go-nfo setup
+
+  to set-up credential config for your go-ci
+  $ ci-go-nfo setup
+
+  to show go-ci info of all runs
+  $ ci-go-nfo
+
+  to show go-ci info of failed runs
+  $ ci-go-nfo fail
+
+  to show go-ci info of passed runs
+  $ ci-go-nfo pass
+  _____
+  .....more to come
+
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 ## Contributing
