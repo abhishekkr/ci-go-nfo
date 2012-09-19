@@ -19,7 +19,13 @@ module Ci
       end
 
       def self.config
-        defaults = YAML.load_file config_from
+        conf_fyl = config_from
+        if File.exists? conf_fyl
+          defaults = YAML.load_file conf_fyl
+        else
+          defaults = persist_config
+        end
+        defaults = persist_config unless defaults
         baseurl  = defaults['baseurl']
         unless defaults['creds'].nil?
           user     = defaults['creds']['user']
@@ -45,7 +51,6 @@ module Ci
         File.open(config_from, 'w+') do |conf|
           conf.write( config_hash.to_yaml )
         end
-                                    puts config_hash.to_yaml
 
         {
          'baseurl' => inputs['baseurl'],
