@@ -22,7 +22,7 @@ when 'help', '-h', '--help', '?'
   \e[0m
   HELP
 when 'setup'
-  Ci::Go::Access.setup_access
+  Ci::Go::Access.persist_config
 when 'pass'
   Ci::Go::Nfo.cli 'pass'
 when 'fail'

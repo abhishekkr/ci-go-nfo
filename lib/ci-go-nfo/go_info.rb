@@ -9,7 +9,11 @@ module Ci
       def self.config_from(new_file = nil)
         gem = File.join File.expand_path(File.dirname __FILE__), '..', '..'
         gem_res = File.join gem, 'resource', 'config.store'
-        return File.open(gem_res, 'r'){|fyl| fyl.read}.chop if new_file.nil?
+        if new_file.nil?
+          from_file = File.open(gem_res, 'r'){|fyl| fyl.read}
+          return from_file.chop.gsub(/^~/,File.expand_path('~'))
+        end
+        new_file = new_file.chop.gsub(/^~/,File.expand_path('~'))
         File.open(gem_res, 'w'){|fyl| fyl.puts new_file}
         new_file
       end
@@ -28,20 +32,23 @@ module Ci
         end
       end
 
-      def self.persist_config_from
+      def self.persist_config
         inputs = setup_access
-        config = {
-                  'baseurl' => inputs['baseurl'],
-                  'creds' => {
-                              'user' => inputs['user'],
-                              'pass' => inputs['password']
-                             }
-                 }
-        config_from inputs['config_from']
-        File.open(inputs['config_from'], 'w'){|conf|
-          conf.write( config.to_yaml)
-        }
-        {'baseurl' => inputs['baseurl'],
+        config_hash = {
+                        'baseurl' => inputs['baseurl'],
+                        'creds' => {
+                                    'user' => inputs['user'],
+                                    'pass' => inputs['password']
+                                  }
+                      }
+        config_from inputs['config_from'] unless inputs['config_from'].empty?
+        File.open(config_from, 'w+') do |conf|
+          conf.write( config_hash.to_yaml )
+        end
+                                    puts config_hash.to_yaml
+
+        {
+         'baseurl' => inputs['baseurl'],
          'user'    => inputs['user'],
          'pass'    => inputs['password']
         }
@@ -51,13 +58,12 @@ module Ci
         ARGV.clear
         print "\nStore sensitive Go Configs in file {current file: #{config_from}}: "
         conf_file = gets.strip
-        config_from(conf_file) unless conf_file.empty?
-        print '\nEnter Base URL of Go Server {like http://<ip>:8153}: '
+        print "\nEnter Base URL of Go Server {like http://<ip>:8153}: "
         baseurl = gets.strip
-        puts 'This is better to be ReadOnly account details...'
-        print '\nEnter Log-in UserName: '
+        puts "\nThis is better to be ReadOnly account details..."
+        print "\nEnter Log-in UserName: "
         user = gets.strip
-        print '\nPassword: '
+        print "\nPassword: "
         password = gets.strip
         {'config_from' => conf_file, 'user' => user, 'password' => password, 'baseurl' => baseurl}
       end
