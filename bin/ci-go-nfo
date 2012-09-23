@@ -9,8 +9,6 @@ when 'help', '-h', '--help', '?'
   \e[1m\e[31mCi-Go-Nfo ver.#{Ci::Go::Nfo::VERSION}\e[0m
   to set-up credential config for your go-ci\e[33m
   $ ci-go-nfo setup\e[0m
-  to set-up credential config for your go-ci\e[33m
-  $ ci-go-nfo setup\e[0m
   to show go-ci info of all runs\e[33m
   $ ci-go-nfo\e[0m
   to show go-ci info of failed runs\e[33m
