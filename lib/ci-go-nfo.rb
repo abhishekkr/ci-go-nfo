@@ -10,24 +10,56 @@ module Ci
   module Go
     module Nfo
 
-      def self.cli(filter = nil)
+      def self.summary
+        go_all = Ci::Go::Cctray.data_from_xml
+        failed_builds, passed_builds = [], []
+        go_all['names'].each_with_index do |name, idx|
+          if name.split('::').size == 3
+            if go_all['lastBuildStatus'][idx] === 'Failure'
+              failed_builds << name.split('::')[0]
+            elsif go_all['lastBuildStatus'][idx] === 'Success'
+              passed_builds << name.split('::')[0]
+            end
+          end
+        end
+        Ci::Go::Print.summary passed_builds.uniq, failed_builds.uniq
+      end
+
+      def self.builds(status = nil)
         go = Ci::Go::Cctray.data_from_xml
         go['names'].each_with_index do |name, idx|
           next if name.split('::').size < 3
-          status = <<-STATUS
-\e[1m\e[31m#{name.gsub('::', '->')}
-\e[32m#{go['lastBuildStatus'][idx]} \e[0m for run#\e[32m#{go['lastBuildLabels'][idx]} \e[33mat #{go['lastBuildTimes'][idx]}
-\e[0mdetails at \e[36m#{go['weburls'][idx]}
+          build = {
+                    'name'        => name,
+                    'last_status' => go['lastBuildStatus'][idx],
+                    'last_label'  => go['lastBuildLabels'][idx],
+                    'last_time'   => go['lastBuildTimes'][idx],
+                    'weburl'      => go['weburls'][idx]
+                  }
 
-          STATUS
-          if filter.nil?
-            puts status
-          elsif filter === 'fail' && go['lastBuildStatus'][idx]==='Failure'
-            puts status
-          elsif filter === 'pass' && go['lastBuildStatus'][idx]==='Success'
-            puts status
+          if status.nil?
+            Ci::Go::Print.build_status build
+          elsif status === 'fail' && build['last_status'] === 'Failure'
+            Ci::Go::Print.build_status build
+          elsif status === 'pass' && build['last_status'] === 'Success'
+            Ci::Go::Print.build_status build
           end
         end
+      end
+
+      def self.build_of(pipeline)
+        go          = Ci::Go::Cctray.data_from_xml
+        build_name  = go['names'].select{|gname| gname.split(/::/)[0] === pipeline}
+        idx         = go.index build_name
+        build = {
+                  'name'        => go['names'][idx],
+                  'last_status' => go['lastBuildStatus'][idx],
+                  'last_label'  => go['lastBuildLabels'][idx],
+                  'last_time'   => go['lastBuildTimes'][idx],
+                  'weburl'      => go['weburls'][idx]
+                }
+
+        Ci::Go::Print.build_status build
       end
 
     end
