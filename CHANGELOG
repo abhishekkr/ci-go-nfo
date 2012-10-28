@@ -1,0 +1,13 @@
+Ci-Go-Nfo CHANGLEOG
+++++++++++++++++++++++++++++++++++++++++++++++++++
+
+v0.0.1 => v0.0.2
+5) get summary of total/passed/failed Go CI pipelines and the names of failed
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+v0.0.0 => v0.0.1
+1) setup config for ci-go-nfo
+2) get information for all builds in Go CI
+3) get information of just passed Go CI builds
+4) get information of just failed Go CI builds

@@ -25,6 +25,9 @@ easily from console itself, no more browse
   to show go-ci info of all runs
   $ ci-go-nfo
 
+  to show go-ci summary of total/passed/failed pipelines
+  $ ci-go-nfo summary
+
   to show go-ci info of failed runs
   $ ci-go-nfo fail
 

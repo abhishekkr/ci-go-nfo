@@ -3,28 +3,46 @@ $LOAD_PATH.unshift File.dirname(__FILE__) + '/../lib'
 
 require 'ci-go-nfo'
 
-case ARGV[0]
-when 'help', '-h', '--help', '?'
-  puts <<-HELP
-  \e[1m\e[31mCi-Go-Nfo ver.#{Ci::Go::Nfo::VERSION}\e[0m
-  to set-up credential config for your go-ci\e[33m
-  $ ci-go-nfo setup\e[0m
-  to show go-ci info of all runs\e[33m
-  $ ci-go-nfo\e[0m
-  to show go-ci info of failed runs\e[33m
-  $ ci-go-nfo fail\e[0m
-  to show go-ci info of passed runs\e[33m
-  $ ci-go-nfo pass\e[0m
-  \e[32m_____
-  \e[33m.....more to come
-  \e[0m
-  HELP
-when 'setup'
-  Ci::Go::Access.persist_config
-when 'pass'
-  Ci::Go::Nfo.cli 'pass'
-when 'fail'
-  Ci::Go::Nfo.cli 'fail'
-else
-  Ci::Go::Nfo.cli
+if ARGV.size === 1
+  case ARGV[0]
+  when 'help', '-h', '--help', '?'
+    puts <<-HELP
+    \e[1m\e[31mCi-Go-Nfo ver.#{Ci::Go::Nfo::VERSION}\e[0m
+    to set-up credential config for your go-ci\e[33m
+    $ ci-go-nfo setup\e[0m
+    to show go-ci info of all runs\e[33m
+    $ ci-go-nfo\e[0m
+    to show go-ci info of failed runs\e[33m
+    $ ci-go-nfo fail\e[0m
+    to show go-ci info of passed runs\e[33m
+    $ ci-go-nfo pass\e[0m
+    \e[32m_____
+    \e[33m.....more to come
+    \e[0m
+    HELP
+  when 'setup'
+    Ci::Go::Access.persist_config
+  when nil
+    Ci::Go::Nfo.builds
+  when 'pass'
+    Ci::Go::Nfo.builds 'pass'
+  when 'fail'
+    Ci::Go::Nfo.builds 'fail'
+  when 'summary'
+    Ci::Go::Nfo.summary
+  else
+    Ci::Go::Nfo.builds nil, ARGV[0]
+  end
+
+elsif ARGV.size === 2
+  argv = ARGV
+  status = ['pass', 'fail']
+  detail = ['dep', 'history']
+  filter = [status, detail].flatten.select{|s| argv.delete status}
+
+  if status.include? filter
+    Ci::Go::Nfo.builds filter, argv
+  elsif filter === 'dep'
+    # would
+  end
 end
