@@ -1,4 +1,5 @@
 ## cctray.rb
+# Ci::Go::Cctray.data_from_xml ~ return hash of array of fields in Go CCTray XML
 
 require 'xml-motor'
 
@@ -7,7 +8,7 @@ module Ci
     module Cctray
 
       def self.data_from_xml
-        cctray = Ci::WWW.http
+        cctray = Ci::WWW::Go.cctray_xml
         splitd = XMLMotor.splitter cctray.body
         tags   = XMLMotor.indexify splitd
         go_nfo = {}
@@ -19,7 +20,6 @@ module Ci
         go_nfo['weburls']         = XMLMotor.xmlattrib 'webUrl', splitd, tags, 'Project'
         go_nfo
       end
-
     end
   end
 end
