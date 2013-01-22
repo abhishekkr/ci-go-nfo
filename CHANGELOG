@@ -1,6 +1,11 @@
 Ci-Go-Nfo CHANGLEOG
 ++++++++++++++++++++++++++++++++++++++++++++++++++
 
+v0.0.2 => v0.0.3
+6) fixing nil argument case, some code cleanup
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 v0.0.1 => v0.0.2
 5) get summary of total/passed/failed Go CI pipelines and the names of failed
 

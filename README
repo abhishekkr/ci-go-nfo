@@ -14,7 +14,7 @@ easily from console itself, no more browse
 
 ## Usage
 
-  Ci-Go-Nfo ver.0.0.1
+  Ci-Go-Nfo ver.0.0.3
 
   to set-up credential config for your go-ci
   $ ci-go-nfo setup
