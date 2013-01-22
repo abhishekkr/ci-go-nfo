@@ -3,7 +3,9 @@ $LOAD_PATH.unshift File.dirname(__FILE__) + '/../lib'
 
 require 'ci-go-nfo'
 
-if ARGV.size === 1
+if ARGV.size === 0
+  Ci::Go::Nfo.builds
+elsif ARGV.size === 1
   case ARGV[0]
   when 'help', '-h', '--help', '?'
     puts <<-HELP
@@ -30,8 +32,6 @@ if ARGV.size === 1
     Ci::Go::Nfo.builds 'fail'
   when 'summary'
     Ci::Go::Nfo.summary
-  else
-    Ci::Go::Nfo.builds nil, ARGV[0]
   end
 
 elsif ARGV.size === 2
