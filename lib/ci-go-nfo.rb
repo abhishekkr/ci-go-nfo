@@ -14,14 +14,20 @@ module Ci
         go_all = Ci::Go::Cctray.data_from_xml
         failed_builds, passed_builds = [], []
         go_all['names'].each_with_index do |name, idx|
-          next unless name.split('::').size == 3
+          name_split = name.split('::')
+          next unless name_split.size == 3
           if go_all['lastBuildStatus'][idx] === 'Failure'
-            failed_builds << name.split('::')[0]
+            failed_builds.push name_split[0]
           elsif go_all['lastBuildStatus'][idx] === 'Success'
-            passed_builds << name.split('::')[0]
+            passed_builds.push name_split[0]
           end
         end
-        Ci::Go::Print.summary passed_builds.uniq, failed_builds.uniq
+        failed_builds = failed_builds.uniq
+        passed_builds = passed_builds.uniq.select{|build|
+                         not failed_builds.include? build
+                       }
+
+        Ci::Go::Print.summary passed_builds, failed_builds
       end
 
       def self.builds(status = nil)
