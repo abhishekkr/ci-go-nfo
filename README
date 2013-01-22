@@ -10,6 +10,10 @@ easily from console itself, no more browse
 
 ## Installation
     $ gem install ci-go-nfo
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ Code Climate Status:
+   https://codeclimate.com/github/abhishekkr/ci-go-nfo
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 ## Usage
