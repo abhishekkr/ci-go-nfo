@@ -16,10 +16,10 @@ module Ci
         go_all['names'].each_with_index do |name, idx|
           name_split = name.split('::')
           next unless name_split.size == 3
-          if go_all['lastBuildStatus'][idx] === 'Failure'
-            failed_builds.push name_split[0]
-          elsif go_all['lastBuildStatus'][idx] === 'Success'
+          if passed? go_all, idx
             passed_builds.push name_split[0]
+          else
+            failed_builds.push name_split[0]
           end
         end
         failed_builds = failed_builds.uniq
@@ -62,6 +62,9 @@ module Ci
         }
       end
 
+      def self.passed?(goXML, index)
+        goXML['lastBuildStatus'][index] === 'Success'
+      end
     end
   end
 end
